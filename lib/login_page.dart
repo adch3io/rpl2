@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'signup_page.dart';
+import 'forgot_password_page.dart'; // pastikan ada file ini
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -34,15 +36,28 @@ class _LoginPageState extends State<LoginPage> {
                 style: TextStyle(fontSize: 14),
               ),
               const SizedBox(height: 40),
+
+              // Email
               const Text('Email'),
               TextField(controller: emailCtrl),
               const SizedBox(height: 20),
+
+              // Password
               const Text('Password'),
               TextField(controller: passCtrl, obscureText: true),
+
               Align(
                 alignment: Alignment.centerRight,
                 child: TextButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    // Arahkan ke halaman Forgot Password
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const ForgotPasswordPage(),
+                      ),
+                    );
+                  },
                   child: Text(
                     'Forgot Password?',
                     style: TextStyle(color: primaryRed),
@@ -50,6 +65,8 @@ class _LoginPageState extends State<LoginPage> {
                 ),
               ),
               const SizedBox(height: 12),
+
+              // Tombol Login
               SizedBox(
                 width: double.infinity,
                 height: 48,
@@ -69,25 +86,29 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                 ),
               ),
-              const SizedBox(height: 20),
-              const Center(child: Text('Or')),
-              const SizedBox(height: 12),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: const [
-                  Icon(Icons.g_mobiledata, size: 40, color: Colors.red),
-                  SizedBox(width: 20),
-                  Icon(Icons.facebook, size: 36, color: Colors.blue),
-                ],
-              ),
               const SizedBox(height: 24),
+
+              // Link ke Sign Up
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   const Text("Don't have an account? "),
                   GestureDetector(
-                    onTap: () {},
-                    child: Text('Sign Up', style: TextStyle(color: primaryRed)),
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const SignupPage(),
+                        ),
+                      );
+                    },
+                    child: Text(
+                      'Sign Up',
+                      style: TextStyle(
+                        color: primaryRed,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
                   ),
                 ],
               ),

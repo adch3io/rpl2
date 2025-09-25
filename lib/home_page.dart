@@ -10,7 +10,37 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   final Color primaryRed = const Color(0xFFB71C1C);
-  int _selectedIndex = 0; // Home aktif
+  int _selectedIndex = 0;
+
+  // Data Mata Kuliah
+  final List<Map<String, dynamic>> mataKuliah = [
+    {
+      'title': 'Jaringan Komputer',
+      'dosen': 'Yasir Arafat',
+      'kelas': 'TI-11',
+      'isRed': true,
+    },
+    {
+      'title': 'Rekayasa Perangkat Lunak',
+      'dosen': 'Yusril Eka Mahendra',
+      'kelas': 'TI-4',
+      'isRed': false,
+    },
+    {
+      'title': 'Pemrograman Web',
+      'dosen': 'Ferry Faisal',
+      'kelas': 'TI-12',
+      'isRed': true,
+    },
+  ];
+
+  //  Data Tugas
+  final List<Map<String, dynamic>> tugas = [
+    {'title': 'PBL Kelompok', 'date': 'Sept 25', 'isRed': true},
+    {'title': 'Project RPL', 'date': 'Sept 30', 'isRed': false},
+    {'title': 'Project Pemrograman Web', 'date': 'Okt 9', 'isRed': true},
+    {'title': 'Presentasi Kewirausahaan', 'date': 'Sept 19', 'isRed': false},
+  ];
 
   void _onItemTapped(int index) {
     if (index == 0) {
@@ -49,16 +79,16 @@ class _HomePageState extends State<HomePage> {
       ),
       body: Column(
         children: [
-          // HEADER DENGAN GRADIENT
+          // HEADER
           Container(
             height: 180,
             width: double.infinity,
             decoration: const BoxDecoration(
               gradient: LinearGradient(
                 colors: [
-                  Color(0xFFB71C1C), // merah tua
-                  Color(0xFFD32F2F), // merah medium
-                  Color(0xFFE57373), // merah muda
+                  Color(0xFFB71C1C),
+                  Color(0xFFD32F2F),
+                  Color(0xFFE57373),
                 ],
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
@@ -96,54 +126,90 @@ class _HomePageState extends State<HomePage> {
             ),
           ),
 
-          // KONTEN SCROLLABLE
+          // KONTEN
           Expanded(
-            child: Container(
-              width: double.infinity,
-              decoration: const BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.vertical(top: Radius.circular(28)),
-              ),
-              padding: const EdgeInsets.all(20),
-              child: ListView(
-                children: [
-                  const Text(
-                    'Mata Kuliah',
-                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                  ),
-                  const SizedBox(height: 12),
-                  _courseCard(
-                    context,
-                    'Jaringan Komputer',
-                    'Yasir Arafat',
-                    'TI-11',
-                    true,
-                  ),
-                  _courseCard(
-                    context,
-                    'Rekayasa Perangkat Lunak',
-                    'Yusril Eka Mahendra',
-                    'TI-4',
-                    false,
-                  ),
-                  _courseCard(
-                    context,
-                    'Pemrograman Web',
-                    'Ferry Faisal',
-                    'TI-12',
-                    true,
-                  ),
-                  const SizedBox(height: 24),
-                  const Text(
-                    'Tugas',
-                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                  ),
-                  const SizedBox(height: 12),
-                  _taskCard('PBL Kelompok', 'Sept 25', true),
-                  _taskCard('Project RPL', 'Sept 30', false),
-                  _taskCard('Project Pemrograman Web', 'Okt 9', true),
-                  const SizedBox(height: 20),
-                ],
+            child: SingleChildScrollView(
+              child: Container(
+                width: double.infinity,
+                decoration: const BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.vertical(top: Radius.circular(28)),
+                ),
+                padding: const EdgeInsets.all(16),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    // --- Mata Kuliah ---
+                    const Text(
+                      "Mata Kuliah",
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                    Container(
+                      padding: const EdgeInsets.all(8),
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                          color: Colors.grey.shade400,
+                          width: 1,
+                        ),
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: SizedBox(
+                        height: 200,
+                        child: ListView.builder(
+                          padding: EdgeInsets.zero,
+                          itemCount: mataKuliah.length,
+                          itemBuilder: (context, index) {
+                            final mk = mataKuliah[index];
+                            return _courseCard(
+                              context,
+                              mk['title'],
+                              mk['dosen'],
+                              mk['kelas'],
+                              mk['isRed'],
+                            );
+                          },
+                        ),
+                      ),
+                    ),
+
+                    const SizedBox(height: 24),
+
+                    // --- Tugas ---
+                    const Text(
+                      "Tugas",
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                    Container(
+                      padding: const EdgeInsets.all(8),
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                          color: Colors.grey.shade400,
+                          width: 1,
+                        ),
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: SizedBox(
+                        height: 200,
+                        child: ListView.builder(
+                          padding: EdgeInsets.zero,
+                          itemCount: tugas.length,
+                          itemBuilder: (context, index) {
+                            final t = tugas[index];
+                            return _taskCard(t['title'], t['date'], t['isRed']);
+                          },
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
           ),

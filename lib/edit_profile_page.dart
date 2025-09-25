@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'login_page.dart';
 
 class EditProfilePage extends StatefulWidget {
   const EditProfilePage({super.key});
@@ -43,7 +44,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
           actions: [
             TextButton(
               onPressed: () {
-                Navigator.of(context).pop();
+                Navigator.of(context).pop(); // tutup dialog
               },
               child: const Text("Cancel"),
             ),
@@ -52,8 +53,9 @@ class _EditProfilePageState extends State<EditProfilePage> {
                 backgroundColor: const Color(0xFFB71C1C),
               ),
               onPressed: () {
-                Navigator.of(context).pop();
+                Navigator.of(context).pop(); // tutup dialog
                 Navigator.pushReplacementNamed(context, '/login');
+                // diarahkan ke halaman login
               },
               child: const Text("Yes", style: TextStyle(color: Colors.white)),
             ),
@@ -214,6 +216,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
         ),
       ),
 
+      // Bottom nav bar
       bottomNavigationBar: ClipRRect(
         borderRadius: const BorderRadius.only(
           topLeft: Radius.circular(25),
