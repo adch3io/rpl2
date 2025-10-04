@@ -1,10 +1,11 @@
+import 'package:elearning_rpl_5d/front/class_page.dart';
 import 'package:flutter/material.dart';
-import 'login_page.dart';
-import 'signup_page.dart';
-import 'home_page.dart';
-import 'edit_profile_page.dart';
-import 'forgot_password_page.dart';
-import 'notification_page.dart';
+import 'front/login_page.dart';
+import 'front/signup_page.dart';
+import 'front/home_page.dart';
+import 'front/edit_profile_page.dart';
+import 'front/forgot_password_page.dart';
+import 'front/class_page.dart';
 
 void main() {
   runApp(const MyApp());
@@ -24,7 +25,7 @@ class MyApp extends StatelessWidget {
         '/home': (context) => const HomePage(),
         '/edit': (context) => const EditProfilePage(),
         '/forgot': (context) => const ForgotPasswordPage(),
-        '/notification': (context) => const NotificationPage(),
+        '/class': (context) => const ClassPage(),
       },
     );
   }
