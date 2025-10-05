@@ -1,6 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
     <application
-        android:label="testt"
+        android:label="elearning_elektro_5DTIF"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity
