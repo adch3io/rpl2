@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
+import '../back/class_service.dart';
 
 class ClassPage extends StatefulWidget {
   const ClassPage({super.key});
@@ -25,20 +24,20 @@ class _ClassPageState extends State<ClassPage> {
     fetchJadwal();
   }
 
-  // 🔹 Fungsi ambil data dari API
+  // 🔹 Fungsi ambil data jadwal dari ClassService
   Future<void> fetchJadwal() async {
-    const String apiUrl = 'https://6c9f952c8e28.ngrok-free.app/api/v1/jadwal';
     try {
-      final response = await http.get(Uri.parse(apiUrl));
-      if (response.statusCode == 200) {
-        final jsonData = json.decode(response.body);
+      final result = await ClassService.getAllJadwal();
+
+      if (result['statusCode'] == 200) {
         setState(() {
-          _jadwalList = jsonData['data'];
+          _jadwalList = result['data']['data'] ?? result['data'];
           _isLoading = false;
         });
       } else {
         setState(() {
-          _errorMessage = "Gagal mengambil data (${response.statusCode})";
+          _errorMessage =
+              "Gagal mengambil data (${result['statusCode']})";
           _isLoading = false;
         });
       }
@@ -50,6 +49,7 @@ class _ClassPageState extends State<ClassPage> {
     }
   }
 
+  // 🔹 Format tanggal seperti kode aslimu
   String _formatFullDate(DateTime dt) {
     final days = [
       'Minggu',
@@ -146,9 +146,9 @@ class _ClassPageState extends State<ClassPage> {
                         "Dosen ID: ${jadwal['dosenId']}",
                         "Kelas ${jadwal['kelas']} | ${jadwal['hari'].toString().toUpperCase()}",
                         primaryRed,
-                        jadwal['ruangan'],
-                        jadwal['jamMulai'],
-                        jadwal['jamSelesai'],
+                        jadwal['ruangan'] ?? '-',
+                        jadwal['jamMulai'] ?? '-',
+                        jadwal['jamSelesai'] ?? '-',
                       ),
 
                     const SizedBox(height: 70),
@@ -202,8 +202,10 @@ class _ClassPageState extends State<ClassPage> {
           children: [
             Text(lecturer, style: const TextStyle(color: Colors.white70)),
             const SizedBox(height: 4),
-            Text("Ruangan: $ruangan", style: const TextStyle(color: Colors.white70)),
-            Text("Jam: $jamMulai - $jamSelesai", style: const TextStyle(color: Colors.white70)),
+            Text("Ruangan: $ruangan",
+                style: const TextStyle(color: Colors.white70)),
+            Text("Jam: $jamMulai - $jamSelesai",
+                style: const TextStyle(color: Colors.white70)),
           ],
         ),
         trailing: Text(
