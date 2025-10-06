@@ -23,12 +23,6 @@ class _HomePageState extends State<HomePage> {
   late DateTime _today;
   late Timer _timer;
 
-  // Dua variasi warna untuk card tugas
-  final List<List<Color>> taskGradients = [
-    [Color(0xFFD32F2F), Color(0xFFE57373)], // Merah klasik
-    [Color(0xFF1976D2), Color(0xFF64B5F6)], // Biru elegan
-  ];
-
   @override
   void initState() {
     super.initState();
@@ -122,9 +116,12 @@ class _HomePageState extends State<HomePage> {
             BottomNavigationBarItem(icon: Icon(Icons.home), label: "Home"),
             BottomNavigationBarItem(
               icon: Icon(Icons.menu_book),
-              label: "Class",
+              label: "Class", // pindah ke tengah
             ),
-            BottomNavigationBarItem(icon: Icon(Icons.person), label: "Profile"),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.person),
+              label: "Profile", // pindah ke kanan
+            ),
           ],
         ),
       ),
@@ -171,7 +168,9 @@ class _HomePageState extends State<HomePage> {
                 ),
                 const CircleAvatar(
                   radius: 28,
-                  backgroundImage: AssetImage('assets/profile.jpg'),
+                  backgroundImage: AssetImage(
+                    'assets/profile.jpg',
+                  ), // pastikan ada
                 ),
               ],
             ),
@@ -235,6 +234,7 @@ class _HomePageState extends State<HomePage> {
                                 itemBuilder: (context, index) {
                                   final mk = mataKuliah[index];
                                   return _courseCard(
+                                    context,
                                     mk['title'],
                                     mk['dosen'],
                                     mk['kelas'],
@@ -296,12 +296,7 @@ class _HomePageState extends State<HomePage> {
                                   final t = tugas[index];
                                   final deadline =
                                       t['deadline'].toString().split(" ")[0];
-                                  return _taskCard(
-                                    context,
-                                    t['judul'],
-                                    deadline,
-                                    index, // biar warna beda tiap card
-                                  );
+                                  return _taskCard(t['judul'], deadline, false);
                                 },
                               );
                             }
@@ -319,25 +314,18 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  // ====== CARD MATA KULIAH ======
-  Widget _courseCard(String title, String dosen, String kelas, bool isRed) {
+  Widget _courseCard(
+    BuildContext context,
+    String title,
+    String dosen,
+    String kelas,
+    bool isRed,
+  ) {
     return Container(
       margin: const EdgeInsets.only(bottom: 8),
       decoration: BoxDecoration(
-        gradient: const LinearGradient(
-          colors: [Color(0xFFB71C1C), Color(0xFFD32F2F)],
-          begin: Alignment.centerLeft,
-          end: Alignment.centerRight,
-        ),
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: Colors.white, width: 2),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.1),
-            blurRadius: 4,
-            offset: const Offset(0, 2),
-          ),
-        ],
+        color: isRed ? primaryRed : const Color(0xFFF4C1C1),
+        borderRadius: BorderRadius.circular(8),
       ),
       child: ListTile(
         title: Text(
@@ -355,59 +343,43 @@ class _HomePageState extends State<HomePage> {
             fontWeight: FontWeight.bold,
           ),
         ),
+        onTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder:
+                  (context) => CourseDetailPage(
+                    title: title,
+                    dosen: dosen,
+                    kelas: kelas,
+                  ),
+            ),
+          );
+        },
       ),
     );
   }
 
-  // ====== CARD TUGAS (2 VARIASI WARNA) ======
-  Widget _taskCard(BuildContext context, String title, String date, int index) {
-    final colors = taskGradients[index % taskGradients.length];
-    return GestureDetector(
-      onTap: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder:
-                (_) => CourseDetailPage(
-                  title: title,
-                  dosen: "Unknown Lecturer",
-                  kelas: "Kelas A",
-                ),
+  Widget _taskCard(String title, String date, bool isRed) {
+    return Container(
+      margin: const EdgeInsets.only(bottom: 8),
+      decoration: BoxDecoration(
+        color: isRed ? primaryRed : const Color(0xFFF4C1C1),
+        borderRadius: BorderRadius.circular(8),
+      ),
+      child: ListTile(
+        title: Text(
+          title,
+          style: const TextStyle(
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
           ),
-        );
-      },
-      child: Container(
-        margin: const EdgeInsets.only(bottom: 8),
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            colors: colors,
-            begin: Alignment.centerLeft,
-            end: Alignment.centerRight,
-          ),
-          borderRadius: BorderRadius.circular(12),
-          border: Border.all(color: Colors.white, width: 2),
-          boxShadow: [
-            BoxShadow(
-              color: colors.first.withOpacity(0.25),
-              blurRadius: 6,
-              offset: const Offset(0, 3),
-            ),
-          ],
         ),
-        child: ListTile(
-          title: Text(
-            title,
-            style: const TextStyle(
-              color: Colors.white,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          trailing: Text(
-            date,
-            style: const TextStyle(
-              color: Colors.white,
-              fontWeight: FontWeight.bold,
-            ),
+        trailing: Text(
+          date,
+          style: const TextStyle(
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
           ),
         ),
       ),
