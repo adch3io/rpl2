@@ -145,8 +145,12 @@ class AuthService {
       "id": prefs.getInt('mahasiswa_id'),
       "nama": prefs.getString('mahasiswa_nama') ?? '',
       "nim": prefs.getString('mahasiswa_nim') ?? '',
-      "jurusan": prefs.getString('mahasiswa_jurusan') ?? '',
-      "prodi": prefs.getString('mahasiswa_prodi') ?? '',
+      // Some code used 'mahasiswa_jurusan' in older versions; prefer 'mahasiswa_prodi'
+      "prodi":
+          prefs.getString('mahasiswa_prodi') ??
+          prefs.getString('mahasiswa_jurusan') ??
+          '',
+      "kelas": prefs.getString('mahasiswa_kelas') ?? '',
     };
   }
 
