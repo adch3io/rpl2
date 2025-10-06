@@ -1,5 +1,4 @@
 // profile_service.dart
-import 'dart:convert';
 import 'api_service.dart';
 
 class ProfileService {
@@ -27,11 +26,10 @@ class ProfileService {
   static Future<Map<String, dynamic>?> fetchProfileById(int id) async {
     try {
       final result = await ApiService.getRequest("mahasiswa/$id");
-      if (result != null && result['data'] != null) {
+      if (result['data'] != null) {
         return Map<String, dynamic>.from(result['data']);
-      } else {
-        return null;
       }
+      return null;
     } catch (e) {
       print("Error fetchProfileById: $e");
       return null;
