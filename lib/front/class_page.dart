@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'task_page.dart'; // pastikan file ini ada di folder yang sama
 
 class ClassPage extends StatefulWidget {
   const ClassPage({super.key});
@@ -24,7 +25,6 @@ class _ClassPageState extends State<ClassPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // Hapus extendBody agar tidak ada area putih di bawah
       backgroundColor: Colors.white,
 
       appBar: AppBar(
@@ -80,12 +80,10 @@ class _ClassPageState extends State<ClassPage> {
             primaryRed,
           ),
 
-          // sedikit jarak supaya gak ketutupan bar
           const SizedBox(height: 70),
         ],
       ),
 
-      // Bottom Navigation merah penuh tanpa celah putih
       bottomNavigationBar: ClipRRect(
         borderRadius: const BorderRadius.only(
           topLeft: Radius.circular(25),
@@ -112,30 +110,43 @@ class _ClassPageState extends State<ClassPage> {
   }
 
   Widget _classCard(String title, String lecturer, String code, Color bgColor) {
-    return Container(
-      margin: const EdgeInsets.only(bottom: 12),
-      decoration: BoxDecoration(
-        color: bgColor,
-        borderRadius: BorderRadius.circular(8),
-      ),
-      child: ListTile(
-        contentPadding: const EdgeInsets.symmetric(
-          horizontal: 16,
-          vertical: 12,
-        ),
-        title: Text(
-          title,
-          style: const TextStyle(
-            color: Colors.white,
-            fontWeight: FontWeight.bold,
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (_) => TaskPage(classTitle: title, lecturer: lecturer),
           ),
+        );
+      },
+      child: Container(
+        margin: const EdgeInsets.only(bottom: 12),
+        decoration: BoxDecoration(
+          color: bgColor,
+          borderRadius: BorderRadius.circular(8),
         ),
-        subtitle: Text(lecturer, style: const TextStyle(color: Colors.white70)),
-        trailing: Text(
-          code,
-          style: const TextStyle(
-            color: Colors.white,
-            fontWeight: FontWeight.bold,
+        child: ListTile(
+          contentPadding: const EdgeInsets.symmetric(
+            horizontal: 16,
+            vertical: 12,
+          ),
+          title: Text(
+            title,
+            style: const TextStyle(
+              color: Colors.white,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          subtitle: Text(
+            lecturer,
+            style: const TextStyle(color: Colors.white70),
+          ),
+          trailing: Text(
+            code,
+            style: const TextStyle(
+              color: Colors.white,
+              fontWeight: FontWeight.bold,
+            ),
           ),
         ),
       ),
